@@ -42,7 +42,8 @@ def load_data(file_bytes, file_name):
 # 3. SIDEBAR - VÙNG CẤU HÌNH
 # ==========================================
 with st.sidebar:
-    st.markdown('<h2 style="color: #1E3A8A;"><b>⚙️ Cấu hình & Tải dữ liệu</b></h2>', unsafe_html=True)
+    # Streamlit hỗ trợ cú pháp :color[văn bản] trực tiếp trong markdown một cách an toàn
+    st.markdown("## :red[**⚙️ Cấu hình & Tải dữ liệu**]")
     
     # Tải dữ liệu mẫu huấn luyện
     uploaded_file = st.file_uploader(
@@ -60,7 +61,7 @@ with st.sidebar:
         help="Chọn thuật toán để xây dựng mô hình phân loại giao dịch gian lận"
     )
     
-    st.markdown('<h3 style="color: #1E3A8A;"><b>Tham số mô hình AI</b></h3>', unsafe_html=True)
+    st.markdown("### :red[**Tham số mô hình AI**]")
     
     # Cấu hình tham số động theo mô hình được lựa chọn
     params = {}
@@ -93,7 +94,7 @@ with st.sidebar:
 # ==========================================
 # 4. HEADER - VÙNG ĐỊNH HƯỚNG
 # ==========================================
-st.markdown('<h1 style="color: #1E3A8A;"><b>🛡️ Hệ thống Phát hiện Giao dịch Gian lận</b></h1>', unsafe_html=True)
+st.markdown("# :red[**🛡️ Hệ thống Phát hiện Giao dịch Gian lận**]")
 st.caption("Ứng dụng phân tích rủi ro và nhận diện tự động các giao dịch bất thường dựa trên mô hình học máy Scikit-Learn.")
 
 if uploaded_file is None:
@@ -115,7 +116,7 @@ if missing_cols:
     st.error(f"❌ Thiếu các cột bắt buộc sau trong file dữ liệu: {', '.join(missing_cols)}")
     st.stop()
 
-st.markdown(f"📁 Đang sử dụng tệp: <b style='color: #1E3A8A;'>{uploaded_file.name}</b> | Quy mô: <b style='color: #1E3A8A;'>{df.shape[0]:,}</b> dòng và <b style='color: #1E3A8A;'>{df.shape[1]}</b> cột.", unsafe_html=True)
+st.markdown(f"📁 Đang sử dụng tệp: :red[**{uploaded_file.name}**] | Quy mô: :red[**{df.shape[0]:,}**] dòng và :red[**{df.shape[1]}**] cột.")
 st.divider()
 
 # ==========================================
@@ -199,7 +200,7 @@ tabs = st.tabs([
 
 # --- TAB 1: TỔNG QUAN DỮ LIỆU ---
 with tabs[0]:
-    st.markdown('<h3 style="color: #1E3A8A;"><b>Phân tích cấu trúc dữ liệu</b></h3>', unsafe_html=True)
+    st.markdown("### :red[**Phân tích cấu trúc dữ liệu**]")
     
     col_m1, col_m2, col_m3 = st.columns(3)
     with col_m1:
@@ -210,25 +211,25 @@ with tabs[0]:
         file_size_mb = len(file_bytes) / (1024 * 1024)
         st.metric("Dung lượng tệp tin", f"{file_size_mb:.2f} MB")
         
-    st.markdown('<p style="color: #1E3A8A; font-size: 18px;"><b>Xem trước 5 hàng dữ liệu đầu tiên</b></p>', unsafe_html=True)
+    st.markdown("#### :red[**Xem trước 5 hàng dữ liệu đầu tiên**]")
     st.dataframe(df.head(), use_container_width=True)
     
-    st.markdown('<p style="color: #1E3A8A; font-size: 18px;"><b>Thống kê mô tả các đặc trưng toán học</b></p>', unsafe_html=True)
+    st.markdown("#### :red[**Thống kê mô tả các đặc trưng toán học**]")
     
-    # Định dạng style cho bảng dữ liệu: Tiêu đề in đậm và chữ màu xanh dương đậm
+    # Định dạng style cho tiêu đề bảng gán trực tiếp qua thuộc tính của Styler (Hoàn toàn an toàn)
     styled_desc = df[features + [target]].describe().T.style.set_table_styles([
-        {'selector': 'th', 'props': [('color', '#1E3A8A'), ('font-weight', 'bold')]}
+        {'selector': 'th', 'props': [('color', '#D32F2F'), ('font-weight', 'bold')]}
     ])
     st.dataframe(styled_desc, use_container_width=True)
 
 # --- TAB 2: TRỰC QUAN HÓA DỮ LIỆU ---
 with tabs[1]:
-    st.markdown('<h3 style="color: #1E3A8A;"><b>Phân tích phân phối và tương quan</b></h3>', unsafe_html=True)
+    st.markdown("### :red[**Phân tích phân phối và tương quan**]")
     
     col_g1, col_g2 = st.columns(2)
     
     with col_g1:
-        st.markdown('<p style="color: #1E3A8A;"><b>Phân phối của biến mục tiêu (default)</b></p>', unsafe_html=True)
+        st.markdown("##### :red[**Phân phối của biến mục tiêu (default)**]")
         target_counts = df[target].value_counts().reset_index()
         target_counts.columns = ['Trạng thái', 'Số lượng']
         target_counts['Trạng thái'] = target_counts['Trạng thái'].map({0: "0 (Bình thường)", 1: "1 (Gian lận)"})
@@ -238,7 +239,7 @@ with tabs[1]:
         st.plotly_chart(fig_target, use_container_width=True)
         
     with col_g2:
-        st.markdown('<p style="color: #1E3A8A;"><b>Tỷ lệ phần trạng giao dịch gian lận</b></p>', unsafe_html=True)
+        st.markdown("##### :red[**Tỷ lệ phần trăm giao dịch gian lận**]")
         fig_pie = px.pie(target_counts, names='Trạng thái', values='Số lượng',
                          color='Trạng thái', color_discrete_map={"0 (Bình thường)": "#2ecc71", "1 (Gian lận)": "#e74c3c"},
                          hole=0.4, height=350)
@@ -246,7 +247,7 @@ with tabs[1]:
         
     st.divider()
     
-    st.markdown('<p style="color: #1E3A8A; font-size: 18px;"><b>Biểu đồ phân phối chi tiết các đặc trưng X</b></p>', unsafe_html=True)
+    st.markdown("#### :red[**Biểu đồ phân phối chi tiết các đặc trưng X**]")
     selected_features = st.multiselect(
         "Chọn các đặc trưng để xem phân phối:",
         options=features,
@@ -269,7 +270,7 @@ with tabs[1]:
 
 # --- TAB 3: KẾT QUẢ HUÂN LUYỆN & KIỂM ĐỊNH ---
 with tabs[2]:
-    st.markdown('<h3 style="color: #1E3A8A;"><b>Đánh giá chất lượng mô hình phân loại</b></h3>', unsafe_html=True)
+    st.markdown("### :red[**Đánh giá chất lượng mô hình phân loại**]")
     
     if 'trained_model' not in st.session_state:
         st.info("💡 Chưa có mô hình nào được huấn luyện. Vui lòng bấm nút 'Huấn luyện mô hình' tại thanh Sidebar bên trái.")
@@ -277,7 +278,7 @@ with tabs[2]:
         metrics = st.session_state['metrics']
         model_name = st.session_state['model_name']
         
-        st.markdown(f"Mô hình đang hiển thị kết quả: <b style='color: #1E3A8A;'>{model_name}</b>", unsafe_html=True)
+        st.markdown(f"Mô hình đang hiển thị kết quả: :red[**{model_name}**]")
         
         # Khối hiển thị chỉ số chính bằng Metric
         m_col1, m_col2, m_col3, m_col4 = st.columns(4)
@@ -295,43 +296,43 @@ with tabs[2]:
         col_res1, col_res2 = st.columns(2)
         
         with col_res1:
-            st.markdown('<p style="color: #1E3A8A;"><b>Ma trận nhầm lẫn (Confusion Matrix):</b></p>', unsafe_html=True)
+            st.markdown("##### :red[**Ma trận nhầm lẫn (Confusion Matrix):**]")
             cm = metrics['cm']
             fig_cm = px.imshow(
                 cm, text_auto=True,
                 labels=dict(x="Nhãn Dự Đoán", y="Nhãn Thực Tế", color="Số lượng"),
                 x=['Bình thường (0)', 'Gian lận (1)'],
                 y=['Bình thường (0)', 'Gian lận (1)'],
-                color_continuous_scale='Blues',
+                color_continuous_scale='Reds',
                 height=350
             )
             st.plotly_chart(fig_cm, use_container_width=True)
             
         with col_res2:
-            st.markdown('<p style="color: #1E3A8A;"><b>Báo cáo phân loại chi tiết (Classification Report):</b></p>', unsafe_html=True)
+            st.markdown("##### :red[**Báo cáo phân loại chi tiết (Classification Report):**]")
             report_df = pd.DataFrame(metrics['report']).transpose()
             
-            # Định dạng cột tiêu đề của bảng báo cáo kết quả chi tiết
+            # Định dạng cột tiêu đề của bảng báo cáo kết quả chi tiết an toàn bảo mật
             styled_report = report_df.style.format(precision=4).set_table_styles([
-                {'selector': 'th', 'props': [('color', '#1E3A8A'), ('font-weight', 'bold')]}
+                {'selector': 'th', 'props': [('color', '#D32F2F'), ('font-weight', 'bold')]}
             ])
             st.dataframe(styled_report, use_container_width=True)
             
         if model_name in ["Random Forest", "Decision Tree"]:
             st.divider()
-            st.markdown('<p style="color: #1E3A8A;"><b>Độ quan trọng của các đặc trưng đầu vào (Feature Importance):</b></p>', unsafe_html=True)
+            st.markdown("##### :red[**Độ quan trọng của các đặc trưng đầu vào (Feature Importance):**]")
             importance = st.session_state['trained_model'].feature_importances_
             feat_imp_df = pd.DataFrame({'Đặc trưng': features, 'Độ quan trọng': importance})
             feat_imp_df = feat_imp_df.sort_values(by='Độ quan trọng', ascending=True)
             
             fig_imp = px.bar(feat_imp_df, x='Độ quan trọng', y='Đặc trưng', orientation='h',
                              title=f"Mức độ đóng góp quyết định của các đặc trưng - {model_name}",
-                             color='Độ quan trọng', color_continuous_scale='Viridis', height=400)
+                             color='Độ quan trọng', color_continuous_scale='Reds', height=400)
             st.plotly_chart(fig_imp, use_container_width=True)
 
 # --- TAB 4: SỬ DỤNG MÔ HÌNH (DỰ BÁO THỰC TẾ) ---
 with tabs[3]:
-    st.markdown('<h3 style="color: #1E3A8A;"><b>Dự báo thời gian thực & Chấm điểm dữ liệu</b></h3>', unsafe_html=True)
+    st.markdown("### :red[**Dự báo thời gian thực & Chấm điểm dữ liệu**]")
     
     if 'trained_model' not in st.session_state:
         st.info("💡 Chưa có mô hình trực tuyến. Vui lòng cấu hình và huấn luyện mô hình thành công trước khi dự báo.")
@@ -371,7 +372,7 @@ with tabs[3]:
                 pred_label = model.predict(input_scaled)[0]
                 
                 st.divider()
-                st.markdown('<p style="color: #1E3A8A; font-size: 18px;"><b>Kết quả đánh giá từ hệ thống AI:</b></p>', unsafe_html=True)
+                st.markdown("#### :red[**Kết quả đánh giá từ hệ thống AI:**]")
                 
                 if pred_label == 1:
                     st.error("🚨 **CẢNH BÁO: Giao dịch này có dấu hiệu GIAN LẬN nguy hiểm!**")
@@ -414,15 +415,15 @@ with tabs[3]:
                             result_df['Xác_Suất_Gian_Lận'] = prob[:, 1]
                         
                         st.divider()
-                        st.markdown('<p style="color: #1E3A8A; font-size: 18px;"><b>Kết quả dự báo hàng loạt</b></p>', unsafe_html=True)
+                        st.markdown("#### :red[**Kết quả dự báo hàng loạt**]")
                         
                         num_fraud = int((predictions == 1).sum())
                         total_rows = len(predictions)
                         st.warning(f"Hệ thống phát hiện **{num_fraud} / {total_rows}** giao dịch có dấu hiệu gian lận bất thường.")
                         
-                        # Định dạng màu sắc tiêu đề bảng cho dữ liệu dự báo hàng loạt
+                        # Định dạng màu sắc tiêu đề bảng cho dữ liệu dự báo hàng loạt một cách bảo mật
                         styled_result = result_df.style.set_table_styles([
-                            {'selector': 'th', 'props': [('color', '#1E3A8A'), ('font-weight', 'bold')]}
+                            {'selector': 'th', 'props': [('color', '#D32F2F'), ('font-weight', 'bold')]}
                         ])
                         st.dataframe(styled_result, use_container_width=True)
                         
